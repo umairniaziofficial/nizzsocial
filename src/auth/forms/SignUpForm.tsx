@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -13,11 +15,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { SignUpValidationSchema } from "@/lib/validation";
 import Loader from "@/components/ui/shared/Loader";
-import { Link } from "react-router-dom";
-import { createUserAccount } from "@/lib/appwrite/api";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import {
+  useCreateUserAccountMutation,
+  useSigninAccount,
+} from "@/lib/react-query/querriesAndMutations";
+import { useUserContext } from "@/context/AuthContext";
 
 const SignUpForm = () => {
-  const isLoading = false;
+  const { checkAuthUser, isAuthenticated } = useUserContext();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { mutateAsync: createUserAccount, isPending: isCreatingUser } =
+    useCreateUserAccountMutation();
+
+  const { mutateAsync: signinAccount, isPending: isSigningIn } =
+    useSigninAccount();
 
   const form = useForm<z.infer<typeof SignUpValidationSchema>>({
     resolver: zodResolver(SignUpValidationSchema),
@@ -29,15 +44,47 @@ const SignUpForm = () => {
     },
   });
 
+  useEffect(() => {
+    if (isAuthenticated && location.pathname === "/sign-up") {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate, location]);
+
   async function onSubmit(values: z.infer<typeof SignUpValidationSchema>) {
-    const newUser = await createUserAccount({
+    try {
+      const newUser = await createUserAccount({
         name: values.name,
         email: values.email,
         password: values.password,
-        username: values.username
-    });
-    console.log(newUser);
-}
+        username: values.username,
+      });
+
+      if (!newUser) {
+        throw new Error("Signup Failed");
+      }
+
+      const session = await signinAccount({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (!session) {
+        throw new Error("Login Failed");
+      }
+
+      const isLoggedIn = await checkAuthUser();
+      if (isLoggedIn) {
+        form.reset();
+        navigate("/");
+      } else {
+        throw new Error("Login Failed");
+      }
+
+      toast({ title: "Account created and logged in successfully!" });
+    } catch (error) {
+      toast({ title: "An error occurred. Please try again." });
+    }
+  }
 
   return (
     <Form {...form}>
@@ -134,7 +181,7 @@ const SignUpForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {isLoading ? (
+            {isCreatingUser || isSigningIn ? (
               <div className="flex-center gap-2">
                 <Loader />
               </div>

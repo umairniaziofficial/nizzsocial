@@ -10,9 +10,9 @@ const AuthLayout = () => {
       ): (
         <>
         <div className="flex flex-1 justify-center items-center flex-col py-10">
-          <Outlet />
+          <Outlet  />
         </div>
-        <img src="/src/assets/images/Side.svg" alt="BannerImage" className="hidden xl:block h-screen w-1/2 object-cover bg-no-repeat" />
+        <img src="/src/assets/images/SideImage.png" alt="BannerImage" className="hidden xl:block h-screen w-1/2 object-cover bg-no-repeat" />
         </>
       )}
     </>

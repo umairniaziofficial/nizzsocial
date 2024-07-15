@@ -6,6 +6,7 @@ import { Home } from "./root/pages";
 import AuthLayout from "./auth/AuthLayout";
 import RootLayout from "./root/RootLayout";
 import SignUpForm from "./auth/forms/SignUpForm";
+import { Toaster } from "@/components/ui/toaster"
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route index element={<Home />} />
         </Route>
       </Routes>
+      <Toaster />
     </div>
   );
 };
