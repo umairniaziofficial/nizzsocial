@@ -15,7 +15,7 @@ const INITIAL_USER: IUser = {
 const INITIAL_STATE: IContextType = {
   user: INITIAL_USER,
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true, // Initialize as true
   setUser: () => {},
   setIsAuthenticated: () => {},
   checkAuthUser: async () => false,
@@ -26,7 +26,7 @@ const AuthContext = createContext<IContextType>(INITIAL_STATE);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<IUser>(INITIAL_USER);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Initialize as true
   const navigate = useNavigate();
 
   const checkAuthUser = useCallback(async (): Promise<boolean> => {

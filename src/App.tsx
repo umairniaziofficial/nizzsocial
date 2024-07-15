@@ -6,17 +6,20 @@ import { Home } from "./root/pages";
 import AuthLayout from "./auth/AuthLayout";
 import RootLayout from "./root/RootLayout";
 import SignUpForm from "./auth/forms/SignUpForm";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
+import NotFound from "./components/ui/shared/NotFound";
 
 const App = () => {
   return (
-    <div className="flex h-screen">
+    <>
       <Routes>
         {/* Public Routes */}
         <Route element={<AuthLayout />}>
           <Route path="/sign-in" element={<SignInForm />} />
-          <Route path="/sign-up" element={<SignUpForm  />} />
+          <Route path="/sign-up" element={<SignUpForm />} />
         </Route>
+
+        <Route path="*" element={<NotFound />} />
 
         {/* Private Routes */}
         <Route element={<RootLayout />}>
@@ -24,7 +27,7 @@ const App = () => {
         </Route>
       </Routes>
       <Toaster />
-    </div>
+    </>
   );
 };
 
