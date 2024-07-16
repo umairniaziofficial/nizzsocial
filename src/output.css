@@ -863,6 +863,10 @@ body{
   white-space: nowrap;
 }
 
+.rounded-\[10px\]{
+  border-radius: 10px;
+}
+
 .rounded-full{
   border-radius: 9999px;
 }
@@ -900,6 +904,10 @@ body{
 
 .p-1{
   padding: 0.25rem;
+}
+
+.p-2{
+  padding: 0.5rem;
 }
 
 .p-4{
@@ -981,6 +989,11 @@ body{
   line-height: 1.25rem;
 }
 
+.text-xs{
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
 .font-bold{
   font-weight: 700;
 }
@@ -1043,6 +1056,14 @@ body{
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.transition{
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 .transition-all{
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1102,6 +1123,12 @@ body{
   line-height: 140%;
 }
 
+.tiny-medium{
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 140%;
+}
+
 /* UTILITIES */
 
 .invert-white{
@@ -1140,6 +1167,30 @@ body{
 /* Saved */
 
 /* Bottom bar */
+
+.bottom-bar{
+  position: sticky;
+  bottom: 0px;
+  z-index: 50;
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(9 9 10 / var(--tw-bg-opacity));
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (min-width: 768px){
+  .bottom-bar{
+    display: none;
+  }
+}
 
 /* File uploader */
 
