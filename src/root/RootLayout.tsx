@@ -1,6 +1,9 @@
+import Bottombar from "@/components/ui/shared/Bottombar";
+import LeftSidebar from "@/components/ui/shared/LeftSidebar";
 import PageLoader from "@/components/ui/shared/PageLoader";
+import Topbar from "@/components/ui/shared/Topbar";
 import { useUserContext } from "@/context/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 const RootLayout = () => {
   const { isAuthenticated, isLoading } = useUserContext();
@@ -8,7 +11,7 @@ const RootLayout = () => {
   if (isLoading) {
     return (
       <div className="flex h-screen w-screen items-center justify-center">
-        <PageLoader/>
+        <PageLoader />
       </div>
     );
   }
@@ -17,7 +20,16 @@ const RootLayout = () => {
     <>
       {isAuthenticated ? (
         <>
-          <div className="h-screen items-center w-screen justify-center">Hello, authenticated user</div>{" "}
+          <div className="w-full md:flex flex-col">
+            <Topbar />
+            <LeftSidebar />
+
+            <section className="flex flex-1 h-full">
+              <Outlet />
+            </section>
+
+            <Bottombar />
+          </div>
         </>
       ) : (
         <Navigate to="/sign-in" />

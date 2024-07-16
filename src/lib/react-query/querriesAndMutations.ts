@@ -1,6 +1,10 @@
 import { INewUser } from "@/types";
 import { useMutation } from "@tanstack/react-query";
-import { createUserAccount, signinAccount } from "../appwrite/api";
+import {
+  createUserAccount,
+  signinAccount,
+  signoutAccount,
+} from "../appwrite/api";
 
 // Mutation for creating a new user account
 export const useCreateUserAccountMutation = () => {
@@ -18,12 +22,19 @@ export const useCreateUserAccountMutation = () => {
 // Mutation for signing in the user
 export const useSigninAccount = () => {
   return useMutation({
-    mutationFn: ({ email, password }: { email: string; password: string }) => signinAccount(email, password),
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      signinAccount(email, password),
     onError: (error) => {
       console.error("Error signing in user:", error);
     },
     onSuccess: () => {
       console.log("User signed in successfully!");
     },
+  });
+};
+
+export const useSignoutAccount = () => {
+  return useMutation({
+    mutationFn: signoutAccount,
   });
 };

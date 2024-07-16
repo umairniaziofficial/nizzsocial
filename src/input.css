@@ -14,7 +14,6 @@
   }
 }
 
-
 @layer utilities {
   /* TYPOGRAPHY */
   .h1-bold {
@@ -238,7 +237,7 @@
 
   /* Topbar */
   .topbar {
-    @apply sticky top-0 z-50 md:hidden bg-dark-2 w-full;
+    @apply sticky top-0 z-50  bg-dark-2 w-full;
   }
 
   /* User card */
@@ -280,12 +279,11 @@
   }
 }
 
-
 .spinner {
   width: 70.4px;
   height: 70.4px;
-  --clr: rgb(255, 73, 73);
-  --clr-alpha: rgb(247, 197, 159,.1);
+  --clr: rgb(201, 0, 0);
+  --clr-alpha: rgb(247, 197, 159, 0.1);
   animation: spinner 1.6s infinite ease;
   transform-style: preserve-3d;
 }
@@ -339,3 +337,4 @@
     transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
   }
 }
+

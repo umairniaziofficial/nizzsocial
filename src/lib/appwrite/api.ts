@@ -86,3 +86,14 @@ export async function getCurrentUser() {
     throw error;
   }
 }
+
+// Function to signout user
+export async function signoutAccount() {
+  try {
+    const session = await account.deleteSession("current");
+    localStorage.removeItem("cookieFallback");
+    return session;
+  } catch (e) {
+    console.log("Error deleting current user session", e);
+  }
+}
