@@ -1,5 +1,4 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-
 import { INavLink } from "@/types";
 import { sidebarLinks } from "@/constants";
 import { Button } from "@/components/ui/button";
@@ -11,17 +10,17 @@ const LeftSidebar = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user, setUser, setIsAuthenticated, isLoading } = useUserContext();
+  const { mutateAsync: signOut, isPending: isSigningOut } = useSignoutAccount();
 
-  const { mutate: signOut } = useSignoutAccount();
-
-  const handleSignOut = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    signOut();
-    setIsAuthenticated(false);
-    setUser(INITIAL_USER);
-    navigate("/sign-in");
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      setUser(INITIAL_USER);
+      setIsAuthenticated(false);
+      navigate("/sign-in");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (
@@ -85,10 +84,17 @@ const LeftSidebar = () => {
       <Button
         variant="ghost"
         className="shad-button_ghost mt-6"
-        onClick={(e) => handleSignOut(e)}
+        onClick={handleSignOut}
+        disabled={isSigningOut}
       >
-        <img src="/assets/icons/logout.svg" alt="logout" />
-        <p className="small-medium lg:base-medium">Logout</p>
+        {isSigningOut ? (
+          <Loader />
+        ) : (
+          <>
+            <img src="/assets/icons/logout.svg" alt="logout" />
+            <p className="small-medium lg:base-medium">Logout</p>
+          </>
+        )}
       </Button>
     </nav>
   );
