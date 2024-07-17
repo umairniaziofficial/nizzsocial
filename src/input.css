@@ -193,7 +193,7 @@
 
   /* File uploader */
   .file_uploader-img {
-    @apply h-80 lg:h-[480px] w-full rounded-[24px] object-cover object-top;
+    @apply h-40 lg:h-[480px] w-full rounded-[24px] object-cover object-top;
   }
 
   .file_uploader-label {
@@ -201,7 +201,7 @@
   }
 
   .file_uploader-box {
-    @apply flex-center flex-col p-7 h-80 lg:h-[612px];
+    @apply flex-center flex-col p-7 h-80 lg:h-[400px];
   }
 
   /* Grid Post List */

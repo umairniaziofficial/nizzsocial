@@ -691,6 +691,14 @@ body{
   z-index: 100;
 }
 
+.mb-2{
+  margin-bottom: 0.5rem;
+}
+
+.mb-6{
+  margin-bottom: 1.5rem;
+}
+
 .ml-1{
   margin-left: 0.25rem;
 }
@@ -823,6 +831,10 @@ body{
   animation: bounce 1s infinite;
 }
 
+.cursor-pointer{
+  cursor: pointer;
+}
+
 .flex-row{
   flex-direction: row;
 }
@@ -919,8 +931,17 @@ body{
   border-radius: 0.375rem;
 }
 
+.rounded-xl{
+  border-radius: 0.75rem;
+}
+
 .border{
   border-width: 1px;
+}
+
+.bg-dark-3{
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 16 18 / var(--tw-bg-opacity));
 }
 
 .bg-primary-500{
@@ -960,6 +981,10 @@ body{
 
 .p-6{
   padding: 1.5rem;
+}
+
+.p-5{
+  padding: 1.25rem;
 }
 
 .px-3{
@@ -1063,34 +1088,24 @@ body{
   color: rgb(120 120 163 / var(--tw-text-opacity));
 }
 
+.text-light-4{
+  --tw-text-opacity: 1;
+  color: rgb(92 92 123 / var(--tw-text-opacity));
+}
+
 .text-primary-500{
   --tw-text-opacity: 1;
   color: rgb(255 49 49 / var(--tw-text-opacity));
 }
 
-.text-purple-700{
+.text-purple-600{
   --tw-text-opacity: 1;
-  color: rgb(126 34 206 / var(--tw-text-opacity));
+  color: rgb(147 51 234 / var(--tw-text-opacity));
 }
 
 .text-white{
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-purple-300{
-  --tw-text-opacity: 1;
-  color: rgb(216 180 254 / var(--tw-text-opacity));
-}
-
-.text-purple-500{
-  --tw-text-opacity: 1;
-  color: rgb(168 85 247 / var(--tw-text-opacity));
-}
-
-.text-purple-600{
-  --tw-text-opacity: 1;
-  color: rgb(147 51 234 / var(--tw-text-opacity));
 }
 
 .underline-offset-4{
@@ -1113,6 +1128,10 @@ body{
 
 .outline{
   outline-style: solid;
+}
+
+.outline-1{
+  outline-width: 1px;
 }
 
 .filter{
@@ -1166,6 +1185,12 @@ body{
   font-weight: 700;
   line-height: 140%;
   letter-spacing: -0.05em;
+}
+
+.base-medium{
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 140%;
 }
 
 .body-bold{
@@ -1326,6 +1351,37 @@ body{
 }
 
 /* File uploader */
+
+.file_uploader-img{
+  height: 10rem;
+  width: 100%;
+  border-radius: 24px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top;
+     object-position: top;
+}
+
+@media (min-width: 1024px){
+  .file_uploader-img{
+    height: 480px;
+  }
+}
+
+.file_uploader-box{
+  height: 20rem;
+  flex-direction: column;
+  padding: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 1024px){
+  .file_uploader-box{
+    height: 400px;
+  }
+}
 
 /* Grid Post List */
 
@@ -1670,6 +1726,10 @@ body{
 }
 
 @media (min-width: 1024px){
+  .lg\:p-10{
+    padding: 2.5rem;
+  }
+
   .lg\:base-medium{
     font-size: 16px;
     font-weight: 500;
