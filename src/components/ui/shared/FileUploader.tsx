@@ -10,10 +10,14 @@ type FileUploaderProps = {
 const FileUploader = ({ fileChange, mediaUrl }: FileUploaderProps) => {
   const [fileUrl, setFileUrl] = useState<string>(mediaUrl || "");
   const [file, setFile] = useState<File[]>([]);
+  
 
   useEffect(() => {
     if (mediaUrl) { 
       setFileUrl(mediaUrl);
+      if(!file) {
+        throw Error;
+      }
     }
   }, [mediaUrl]);
 

@@ -90,7 +90,7 @@ const SignUpForm = () => {
     <Form {...form}>
       <div className="sm:w-420 flex items-center justify-center max-sm:h-screen  flex-col text-white">
         <div className="flex items-center">
-          <img src="/src/assets/Logo.svg" alt="logo" className="w-8" />
+          <img src="/Logo.svg" alt="logo" className="w-8" />
           <p className="text-2xl pl-3 font-semibold">NizzSocial</p>
         </div>
         <h1 className="h3-bold md:h2-bold pt-5 sm:pt-8">
