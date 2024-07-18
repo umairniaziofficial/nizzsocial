@@ -1,16 +1,21 @@
-import { INewPost, INewUser, IUpdatePost } from "@/types";
+import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createPost,
   createUserAccount,
+  deletePost,
   deleteSavedPost,
   getCurrentUser,
+  getPostById,
   getRecentPosts,
+  getUserById,
+  getUserPosts,
   likePost,
   savePost,
   signinAccount,
   signoutAccount,
   updatePost,
+  updateUser,
 } from "../appwrite/api";
 import { QUERY_KEYS } from "./queryKeys";
 
@@ -47,7 +52,6 @@ export const useSignoutAccount = () => {
   });
 };
 
-
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
 
@@ -64,7 +68,6 @@ export const useCreatePost = () => {
     },
   });
 };
-
 
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
@@ -91,7 +94,6 @@ export const useUpdatePost = () => {
   });
 };
 
-
 export const useGetRecentPosts = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
@@ -99,14 +101,17 @@ export const useGetRecentPosts = () => {
   });
 };
 
-
-
 export const useLikePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ postId, likesArray }: { postId: string; likesArray: string[] }) =>
-      likePost(postId, likesArray),
+    mutationFn: ({
+      postId,
+      likesArray,
+    }: {
+      postId: string;
+      likesArray: string[];
+    }) => likePost(postId, likesArray),
     onSuccess: (updatedPost) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POST_BY_ID, updatedPost.$id],
@@ -143,10 +148,8 @@ export const useSavePost = () => {
   });
 };
 
-
 export const useDeleteSavedPost = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (savedRecordId: string) => deleteSavedPost(savedRecordId),
     onSuccess: () => {
@@ -160,13 +163,8 @@ export const useDeleteSavedPost = () => {
         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
       });
     },
-    onError: (error) => {
-      console.error("Error deleting saved post:", error);
-    },
   });
 };
-
-
 
 export const useGetCurrentUser = () => {
   return useQuery({
@@ -174,3 +172,65 @@ export const useGetCurrentUser = () => {
     queryFn: getCurrentUser,
   });
 };
+
+
+
+export const useGetPostById = (postId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
+    queryFn: () => getPostById(postId),
+    enabled: !!postId,
+  });
+};
+
+
+
+
+export const useGetUserPosts = (userId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_POSTS, userId],
+    queryFn: () => getUserPosts(userId),
+    enabled: !!userId,
+  });
+};
+
+
+export const useDeletePost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ postId, imageId }: { postId?: string; imageId: string }) =>
+      deletePost(postId, imageId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+      });
+    },
+  });
+};
+
+export const useGetUserById = (userId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_BY_ID, userId],
+    queryFn: () => getUserById(userId),
+    enabled: !!userId,
+  });
+};
+
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (user: IUpdateUser) => updateUser(user),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_BY_ID, data?.$id],
+      });
+    },
+  });
+};
+
+
+

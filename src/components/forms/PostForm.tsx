@@ -18,13 +18,16 @@ import FileUploader from "../ui/shared/FileUploader";
 import { PostValidation } from "@/lib/validation";
 import { Models } from "appwrite";
 import { useUserContext } from "@/context/AuthContext";
-import { useCreatePost, useUpdatePost } from "@/lib/react-query/querriesAndMutations";
-import Loader from "../ui/shared/Loader";
+import {
+  useCreatePost,
+  useUpdatePost,
+} from "@/lib/react-query/querriesAndMutations";
+import PostLoader from "../ui/shared/PostLoader";
 
 type PostFormProps = {
   post?: Models.Document;
   action: "Create" | "Update";
-}
+};
 
 const PostForm = ({ post, action }: PostFormProps) => {
   const navigate = useNavigate();
@@ -78,7 +81,9 @@ const PostForm = ({ post, action }: PostFormProps) => {
     }
     navigate("/");
   };
-
+  const handleCancel = () => {
+    navigate("/");
+  };
   return (
     <Form {...form}>
       <form
@@ -110,7 +115,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
             <FormItem>
               <FormLabel>File</FormLabel>
               <FormControl>
-                <FileUploader 
+                <FileUploader
                   fileChange={field.onChange}
                   mediaUrl={post?.imageUrl}
                 />
@@ -144,7 +149,8 @@ const PostForm = ({ post, action }: PostFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Add tags <span className="text-purple-600">(separated by ",")</span>
+                Add tags{" "}
+                <span className="text-purple-600">(separated by ",")</span>
               </FormLabel>
               <FormControl>
                 <Input
@@ -158,15 +164,19 @@ const PostForm = ({ post, action }: PostFormProps) => {
           )}
         />
         <div className="flex gap-4 items-center justify-end">
-          <Button type="button" className="shad-button_dark_4">Cancel</Button>
-          <Button 
-            type="submit" 
+          <Button
+            type="button"
+            className="shad-button_dark_4"
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
             className="shad-button_primary whitespace-nowrap"
             disabled={isLoadingCreate || isLoadingUpdate}
           >
-            {isLoadingCreate || isLoadingUpdate 
-              ? <Loader/>
-              : "Submit"}
+            {isLoadingCreate || isLoadingUpdate ? <PostLoader /> : "Submit"}
           </Button>
         </div>
       </form>
