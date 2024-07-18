@@ -4,12 +4,12 @@ import { sidebarLinks } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { useUserContext, INITIAL_USER } from "@/context/AuthContext";
 import { useSignoutAccount } from "@/lib/react-query/querriesAndMutations";
-import Loader from "./Loader";
+import PostLoader from "./PostLoader";
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { user, setUser, setIsAuthenticated, isLoading } = useUserContext();
+  const { user, setUser, setIsAuthenticated } = useUserContext();
   const { mutateAsync: signOut, isPending: isSigningOut } = useSignoutAccount();
 
   const handleSignOut = async () => {
@@ -33,11 +33,7 @@ const LeftSidebar = () => {
           </div>
         </Link>
 
-        {isLoading || !user.email ? (
-          <div className="h-14 flex items-center justify-center">
-            <Loader />
-          </div>
-        ) : (
+      
           <Link to={`/profile/${user.id}`} className="flex gap-3 items-center">
             <img
               src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
@@ -49,7 +45,7 @@ const LeftSidebar = () => {
               <p className="small-regular text-light-3">@{user.username}</p>
             </div>
           </Link>
-        )}
+      
 
         <ul className="flex flex-col gap-6">
           {sidebarLinks.map((link: INavLink) => {
@@ -88,7 +84,7 @@ const LeftSidebar = () => {
         disabled={isSigningOut}
       >
         {isSigningOut ? (
-          <Loader />
+          <PostLoader />
         ) : (
           <>
             <img src="/assets/icons/logout.svg" alt="logout" />

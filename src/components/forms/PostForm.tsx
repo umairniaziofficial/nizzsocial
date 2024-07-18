@@ -150,7 +150,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
             <FormItem>
               <FormLabel>
                 Add tags{" "}
-                <span className="text-purple-600">(separated by ",")</span>
+                <span className="text-red">(separated by ",")</span>
               </FormLabel>
               <FormControl>
                 <Input

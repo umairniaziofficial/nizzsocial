@@ -1,17 +1,21 @@
 import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createPost,
   createUserAccount,
   deletePost,
   deleteSavedPost,
   getCurrentUser,
+  getInfinitePosts,
   getPostById,
   getRecentPosts,
   getUserById,
   getUserPosts,
+  getUsers,
   likePost,
+  PostsResponse,
   savePost,
+  searchPosts,
   signinAccount,
   signoutAccount,
   updatePost,
@@ -232,5 +236,40 @@ export const useUpdateUser = () => {
   });
 };
 
+export const useGetUsers = (limit?: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USERS],
+    queryFn: () => getUsers(limit),
+  });
+};
 
 
+export const useSearchPosts = (searchTerm: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.SEARCH_POSTS, searchTerm],
+    queryFn: () => searchPosts(searchTerm),
+    enabled: !!searchTerm,
+  });
+};
+
+
+export const useGetPosts = () => {
+  return useInfiniteQuery<PostsResponse, Error>({
+    queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+    queryFn: ({ pageParam }) => getInfinitePosts({ pageParam: pageParam as string | null }),
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => {
+      // If there's no data, there are no more pages.
+      if (lastPage.documents.length === 0) {
+        return null;
+      }
+
+      // Use the $id of the last document as the cursor.
+      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      return lastId;
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+};
