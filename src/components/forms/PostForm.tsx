@@ -13,27 +13,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
 import FileUploader from "../ui/shared/FileUploader";
+import { PostValidation } from "@/lib/validation";
+import { Models } from "appwrite";
 
-const PostForm = ({ post }) => {
-  const formSchema = z.object({
-    caption: z.string().min(5, {
-      message: "Caption must be at least 5 characters.",
-    }),
-    file: z.any(),
-    location: z.string().optional(),
-    tags: z.string().optional(),
-  });
+type PostFormProps = {
+  post?: Models.Document
+}
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+const PostForm = ({ post }:PostFormProps) => {
+
+  const form = useForm<z.infer<typeof PostValidation>>({
+    resolver: zodResolver(PostValidation),
     defaultValues: {
       caption: post?.caption || "",
+      file: [],
       location: post?.location || "",
       tags: post?.tags?.join(", ") || "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof PostValidation>) {
     console.log(values);
   }
 

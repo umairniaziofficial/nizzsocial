@@ -12,3 +12,11 @@ export const SignUpValidationSchema = z.object({
         .min(8, { message: "Password must be at least 8 characters." })
         .max(50, { message: "Password must not exceed 50 characters." }),
 });
+
+
+export const PostValidation =  z.object(
+    {caption: z.string().min(5, { message: "Caption must be at least 5 characters." }).max(2200),
+    file: z.custom<File[]>(),
+    location: z.string().min(2).max(2200),
+    tags: z.string().optional(),}
+)

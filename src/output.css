@@ -979,12 +979,12 @@ body{
   padding: 1rem;
 }
 
-.p-6{
-  padding: 1.5rem;
-}
-
 .p-5{
   padding: 1.25rem;
+}
+
+.p-6{
+  padding: 1.5rem;
 }
 
 .px-3{
@@ -1128,10 +1128,6 @@ body{
 
 .outline{
   outline-style: solid;
-}
-
-.outline-1{
-  outline-width: 1px;
 }
 
 .filter{
@@ -1366,6 +1362,20 @@ body{
   .file_uploader-img{
     height: 480px;
   }
+}
+
+.file_uploader-label{
+  width: 100%;
+  border-top-width: 1px;
+  --tw-border-opacity: 1;
+  border-top-color: rgb(31 31 34 / var(--tw-border-opacity));
+  padding: 1rem;
+  text-align: center;
+  --tw-text-opacity: 1;
+  color: rgb(92 92 123 / var(--tw-text-opacity));
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
 }
 
 .file_uploader-box{
