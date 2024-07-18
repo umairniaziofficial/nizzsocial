@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import {
   Form,
@@ -15,31 +17,72 @@ import { Textarea } from "../ui/textarea";
 import FileUploader from "../ui/shared/FileUploader";
 import { PostValidation } from "@/lib/validation";
 import { Models } from "appwrite";
+import { useUserContext } from "@/context/AuthContext";
+import { useCreatePost, useUpdatePost } from "@/lib/react-query/querriesAndMutations";
+import Loader from "../ui/shared/Loader";
 
 type PostFormProps = {
-  post?: Models.Document
+  post?: Models.Document;
+  action: "Create" | "Update";
 }
 
-const PostForm = ({ post }:PostFormProps) => {
-
+const PostForm = ({ post, action }: PostFormProps) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { user } = useUserContext();
   const form = useForm<z.infer<typeof PostValidation>>({
     resolver: zodResolver(PostValidation),
     defaultValues: {
-      caption: post?.caption || "",
+      caption: post ? post?.caption : "",
       file: [],
-      location: post?.location || "",
-      tags: post?.tags?.join(", ") || "",
+      location: post ? post.location : "",
+      tags: post ? post.tags.join(",") : "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof PostValidation>) {
-    console.log(values);
-  }
+  // Query
+  const { mutateAsync: createPost, isPending: isLoadingCreate } =
+    useCreatePost();
+  const { mutateAsync: updatePost, isPending: isLoadingUpdate } =
+    useUpdatePost();
+
+  // Handler
+  const handleSubmit = async (value: z.infer<typeof PostValidation>) => {
+    // ACTION = UPDATE
+    if (post && action === "Update") {
+      const updatedPost = await updatePost({
+        ...value,
+        postId: post.$id,
+        imageId: post.imageId,
+        imageUrl: post.imageUrl,
+      });
+
+      if (!updatedPost) {
+        toast({
+          title: `${action} post failed. Please try again.`,
+        });
+      }
+      return navigate(`/posts/${post.$id}`);
+    }
+
+    // ACTION = CREATE
+    const newPost = await createPost({
+      ...value,
+      userId: user.id,
+    });
+
+    if (!newPost) {
+      toast({
+        title: `${action} post failed. Please try again.`,
+      });
+    }
+    navigate("/");
+  };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col gap-9 max-w-5xl w-full "
       >
         <FormField
@@ -116,7 +159,15 @@ const PostForm = ({ post }:PostFormProps) => {
         />
         <div className="flex gap-4 items-center justify-end">
           <Button type="button" className="shad-button_dark_4">Cancel</Button>
-          <Button type="submit" className="shad-button_primary whitespace-nowrap">Submit</Button>
+          <Button 
+            type="submit" 
+            className="shad-button_primary whitespace-nowrap"
+            disabled={isLoadingCreate || isLoadingUpdate}
+          >
+            {isLoadingCreate || isLoadingUpdate 
+              ? <Loader/>
+              : "Submit"}
+          </Button>
         </div>
       </form>
     </Form>

@@ -1,24 +1,14 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactNode } from "react";
+import React from "react";
+import { ReactQueryDevtools } from "react-query-devtools";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      retry: 1,
-      staleTime: 5 * 1000,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
-const QueryProvider = ({ children }: { children: ReactNode }) => {
+export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };
-
-export default QueryProvider;
