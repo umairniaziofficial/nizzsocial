@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../button";
 import { useSignoutAccount } from "@/lib/react-query/querriesAndMutations";
-import PageLoader from "./PageLoader";
-import { useUserContext } from "@/context/AuthContext";
+import { INITIAL_USER, useUserContext } from "@/context/AuthContext";
+import PostLoader from "./PostLoader";
 
 const Topbar = () => {
   const navigate = useNavigate();
@@ -12,26 +12,17 @@ const Topbar = () => {
   const handleSignOut = async () => {
     try {
       await signOut();
-      setUser({
-        id: "",
-        name: "",
-        username: "",
-        email: "",
-        imageUrl: "",
-        bio: "",
-      });
+      setUser(INITIAL_USER);
       setIsAuthenticated(false);
-      localStorage.removeItem("cookieFallback");
       navigate("/sign-in");
     } catch (error) {
       console.error("Error signing out:", error);
     }
   };
-
   if (isLoading) {
     return (
       <div className="h-screen flex justify-center items-center">
-        <PageLoader />
+        <PostLoader />
       </div>
     );
   }
